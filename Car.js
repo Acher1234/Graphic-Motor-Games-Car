@@ -1,12 +1,11 @@
 class Car 
 {
-    static carList;
 
     constructor(games)
     {
         this.vector = new Vector();
         this.x = games.widht - 50;
-        this.y = games.height + 50;
+        this.y = 50;
         this.games = games;
         this.degres = 0;
         var img = document.createElement('img');
@@ -16,43 +15,48 @@ class Car
         img.style.bottom = this.y  + 'px'
         games.body.appendChild(img);
         this.img = img;
-        if(this.carList == null)
-        {
-            this.carList = [];
-        }
-        this.carList.push(this);
     }
 
     run()
     {
-        this.checkTouch()
+        this.decideDirection()
+        this.checkDirection()
+        this.games.checkCordinate(this.x,this.y)
     }
 
 
-    checkTouch()
+    decideDirection()
     {
-        if(this.games.Left && this.games.Right)
+        this.Right = this.games.Right
+        this.Left = this.games.Left
+        this.Up = this.games.Up
+        this.Down = this.games.Down
+    }
+
+    checkDirection()
+    {
+        if(this.Left && this.Right)
         {
             console.log('bug')
         }
-        else if(this.games.Left == true)
+        else if(this.Left == true)
         {
             this.left()
         }
-        else if(this.games.Right == true)
+        else if(this.Right == true)
         {
             this.right()
         }
-        if(!this.games.Up && !this.games.Down)
+        if(!this.Up && !this.Down)
         {
             this.freine()
             return;
         }   
-        if(this.games.Down == true)
+        if(this.Down == true)
         {
             this.down()
         }
-        if(this.games.Up == true)
+        if(this.Up == true)
         {
            this.up()
         }
@@ -60,16 +64,19 @@ class Car
     }
 
     freine()    {
-        this.vector.speed   = this.vector.speed > 1.05  ? this.vector.speed / 1.1 : this.vector.speed;
-        this.x = this.x + this.vector.x *this.vector.speed;
-        this.y = this.y + this.vector.y * this.vector.speed;
-        this.img.style.left = this.x + 'px'
-        this.img.style.bottom = this.y + 'px'
+        this.vector.speed   = this.vector.speed > 1.05  ? this.vector.speed / 1.01 : this.vector.speed;
+        if(this.vector.speed > 1.05)
+        {
+            this.x = this.x + this.vector.x *this.vector.speed;
+            this.y = this.y + this.vector.y * this.vector.speed;
+            this.img.style.left = this.x + 'px'
+            this.img.style.bottom = this.y + 'px'
+        }
     }
 
     up()
     {
-        this.vector.speed = this.vector.speed *1.005;
+        this.vector.speed = this.vector.speed *1.0005;
         this.x = this.x + this.vector.x *this.vector.speed;
         this.y = this.y + this.vector.y * this.vector.speed;
         this.img.style.left = this.x + 'px'
@@ -90,12 +97,9 @@ class Car
         this.degres = this.degres >= 360 ? this.degres - 360 : this.degres;
         this.degres = this.degres < 0 ? 360 + this.degres  : this.degres;
         let realDegres = (360- this.degres) > 270 ? (90-this.degres) : (360-this.degres) + 90;
-        console.log(realDegres )
         let x,y;
         x = Math.cos(realDegres * Math.PI / 180)
         y = Math.sin(realDegres* Math.PI / 180)
-        console.log('x:' +x)
-        console.log('y:' +y)
         this.vector.x = x;
         this.vector.y = y;
         this.img.style.transform = "rotate("+ (this.degres )+"deg)";
