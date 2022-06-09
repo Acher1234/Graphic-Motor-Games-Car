@@ -6,7 +6,7 @@ class obstacle
         this.y = Math.random() * games.height;
         this.games = games;
         var obs = document.createElement('div');
-        obs.style = 'position: absolute;height: 15px;width:15px;background-color:grey;';
+        obs.style = 'position: absolute;height: 15px;width:15px;background-color:grey;border-radius:100px';
         obs.style.left = this.x + 'px'//go on the right more you have px 
         obs.style.bottom = this.y  + 'px'//go on the top more you have px 
         games.body.appendChild(obs);

@@ -3,7 +3,9 @@ class Games
     constructor()
     {
         this.obstacle = []
-        this.height = screen.height *0.88;
+        this.cars = []
+        this.removedCars = []
+        this.height = screen.height - 130;
         this.widht = document.body.clientWidth;
         this.body = document.getElementById('body')
         this.body.style.width = this.widht + 'px';
@@ -13,16 +15,16 @@ class Games
 
     checkCordinate(x,y)
     {
-        this.checkBorder(x,y)
-        this.checkObstacle(x,y)
+        return  this.checkBorder(x,y) && this.checkObstacle(x,y)
     }
     checkObstacle(x,y)
     {
         for(let i = 0;i< this.obstacle.length;i++)
         {
             if(!this.obstacle[i].checkCordinate(x,y))
-                this.gameLost()
+                return false
         }
+        return true
     }
 
 
@@ -31,17 +33,29 @@ class Games
     {
         if(y >= this.height || y <= 0 || x >= this.widht || x <= 0)
         {
-            this.gameLost()
+            return false;
         }
+        return true;
     }
 
     gameLost()
     {
         clearInterval(this.gamesInterval)
         clearInterval(this.obstacleInterval)
-        alert('perdu');
         location.reload();
     }
+
+    removeCar(car)
+    {
+        console.log(this.cars.indexOf(car))
+        this.cars.splice(this.cars.indexOf(car),1)
+        this.removedCars.push(this.cars)
+        if(this.cars.length == 0)
+        {
+            this.gameLost()
+        }
+    }
+
     setVarTrue(key)
     {
         switch(key)
@@ -93,7 +107,7 @@ class Games
 
     createCar()
     {
-        this.car = new Car(this);
+        this.cars.push(new Car(this));
     }
 
     initialise()
@@ -113,12 +127,17 @@ class Games
 
     run()
     {
-        this.car.run()
+        console.log(this.cars)
+        for(let i = 0;i< this.cars.length;i++)
+        {
+            this.cars[i].run()
+        }
     }
 
 }
 
 window.addEventListener('keydown',(e)=>{
+    e.keyCode == 13 ? Games.singleton.createCar() : null
     Games.GamesConstructor().setVarTrue(e.keyCode)
 
 })

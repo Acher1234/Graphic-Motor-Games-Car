@@ -3,6 +3,7 @@ class Car
 
     constructor(games)
     {
+        this.score = 0
         this.vector = new Vector();
         this.x = games.widht - 50;
         this.y = 50;
@@ -21,7 +22,16 @@ class Car
     {
         this.decideDirection()
         this.checkDirection()
-        this.games.checkCordinate(this.x,this.y)
+        let win = this.games.checkCordinate(this.x,this.y)
+        if(!win)
+        {
+            this.games.removeCar(this)
+            this.destroy()
+        }
+    }
+    destroy()
+    {
+        this.games.body.removeChild(this.img)
     }
 
 
@@ -76,9 +86,10 @@ class Car
 
     up()
     {
-        this.vector.speed = this.vector.speed *1.0005;
+        this.vector.speed = this.vector.speed *1.001;
         this.x = this.x + this.vector.x *this.vector.speed;
         this.y = this.y + this.vector.y * this.vector.speed;
+        this.score +=  Math.abs(this.vector.x *this.vector.speed) + Math.abs(this.vector.y * this.vector.speed);
         this.img.style.left = this.x + 'px'
         this.img.style.bottom = this.y + 'px'
     }
@@ -88,6 +99,7 @@ class Car
         this.vector.speed   = this.vector.speed > 1.05  ? this.vector.speed / 1.1 : this.vector.speed;
         this.x = this.x - this.vector.x *this.vector.speed;
         this.y = this.y - this.vector.y * this.vector.speed;
+        this.score +=  Math.abs(this.vector.x *this.vector.speed) + Math.abs(this.vector.y * this.vector.speed);
         this.img.style.left = this.x + 'px'
         this.img.style.bottom = this.y + 'px'
     }
