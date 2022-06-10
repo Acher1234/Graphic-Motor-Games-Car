@@ -5,7 +5,7 @@ class Games
         this.obstacle = []
         this.cars = []
         this.removedCars = []
-        this.height = screen.height - 130;
+        this.height = window.innerHeight * 0.97;
         this.widht = document.body.clientWidth;
         this.body = document.getElementById('body')
         this.body.style.width = this.widht + 'px';
