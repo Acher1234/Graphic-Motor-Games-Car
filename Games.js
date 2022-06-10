@@ -13,9 +13,9 @@ class Games
         this.body.style.border = '1px solid black';
     }
 
-    checkCordinate(x,y)
+    checkCordinate(x,y,pixelCar)
     {
-        return  this.checkBorder(x,y) && this.checkObstacle(x,y)
+        return  this.checkBorder(x,y,pixelCar) && this.checkObstacle(x,y)
     }
     checkObstacle(x,y)
     {
@@ -29,9 +29,9 @@ class Games
 
 
 
-    checkBorder(x,y)
+    checkBorder(x,y,pixelCar)
     {
-        if(y >= (this.height - 30) || y <= 0 || x >= this.widht || x <= 0)
+        if(y >= (this.height-(pixelCar/2)) || y <= (pixelCar/2) || x >= (this.widht-(pixelCar/2)) || x <= ((pixelCar/2)))
         {
             return false;
         }
@@ -47,7 +47,6 @@ class Games
 
     removeCar(car)
     {
-        console.log(this.cars.indexOf(car))
         this.cars.splice(this.cars.indexOf(car),1)
         this.removedCars.push(this.cars)
         if(this.cars.length == 0)

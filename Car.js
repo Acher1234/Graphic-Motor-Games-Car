@@ -3,16 +3,17 @@ class Car
 
     constructor(games)
     {
+        this.radar = []
         this.score = 0
         this.vector = new Vector();
         this.x = games.widht - 50;
         this.y = 50;
-        let height = games.height * 0.05;
+        this.height = games.height * 0.05;
         this.games = games;
         this.degres = 0;
         var img = document.createElement('img');
         img.src = './car.png';
-        img.style = 'position: absolute;height:'+height+'px;';
+        img.style = 'position: absolute;height:'+this.height+'px;';
         img.style.left = this.x + 'px'
         img.style.bottom = this.y  + 'px'
         games.body.appendChild(img);
@@ -23,7 +24,8 @@ class Car
     {
         this.decideDirection()
         this.checkDirection()
-        let win = this.games.checkCordinate(this.x,this.y)
+        this.createRadar()
+        let win = this.games.checkCordinate(this.x,this.y,this.height)
         if(!win)
         {
             this.games.removeCar(this)
@@ -35,6 +37,18 @@ class Car
         this.games.body.removeChild(this.img)
     }
 
+    createRadar()
+    {
+        for(let i = 0;i<this.radar.length;i++)
+        {
+            this.radar[i].destuctor()
+        }
+        this.radar = []
+        for(let i = 0;i< 360;i+=45)
+        {
+            this.radar.push(new radar(this.x + this.vector.x,this.y = this.y + this.vector.y, i ,this.games))
+        }
+    }
 
     decideDirection()
     {
