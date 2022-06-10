@@ -7,11 +7,12 @@ class Car
         this.vector = new Vector();
         this.x = games.widht - 50;
         this.y = 50;
+        let height = games.height * 0.05;
         this.games = games;
         this.degres = 0;
         var img = document.createElement('img');
         img.src = './car.png';
-        img.style = 'position: absolute;height: 5%;';
+        img.style = 'position: absolute;height:'+height+'px;';
         img.style.left = this.x + 'px'
         img.style.bottom = this.y  + 'px'
         games.body.appendChild(img);
