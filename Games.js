@@ -13,9 +13,9 @@ class Games
         this.body.style.border = '1px solid black';
     }
 
-    checkCordinate(x,y,pixelCar)
+    checkCordinate(x,y,pixelSize)
     {
-        return  this.checkBorder(x,y,pixelCar) && this.checkObstacle(x,y)
+        return  this.checkBorder(x,y,pixelSize) && this.checkObstacle(x,y)
     }
     checkObstacle(x,y)
     {
@@ -42,7 +42,7 @@ class Games
     {
         clearInterval(this.gamesInterval)
         clearInterval(this.obstacleInterval)
-        location.reload();
+        // location.reload();
     }
 
     removeCar(car)
@@ -126,7 +126,6 @@ class Games
 
     run()
     {
-        console.log(this.cars)
         for(let i = 0;i< this.cars.length;i++)
         {
             this.cars[i].run()

@@ -3,6 +3,7 @@ class Car
 
     constructor(games)
     {
+        this.noNeedToFreineSpeed = 1.05
         this.radar = []
         this.score = 0
         this.vector = new Vector();
@@ -23,8 +24,11 @@ class Car
     run()
     {
         this.decideDirection()
-        this.checkDirection()
-        this.createRadar()
+        if(this.Down || this.Up || this.Left || this.Right || this.vector.speed > this.noNeedToFreineSpeed )
+        {
+            this.checkDirection()
+            this.createRadar() 
+        }
         let win = this.games.checkCordinate(this.x,this.y,this.height)
         if(!win)
         {
@@ -34,6 +38,10 @@ class Car
     }
     destroy()
     {
+        for(let i = 0;i<this.radar.length;i++)
+        {
+            this.radar[i].destuctor()
+        }
         this.games.body.removeChild(this.img)
     }
 
@@ -44,9 +52,10 @@ class Car
             this.radar[i].destuctor()
         }
         this.radar = []
-        for(let i = 0;i< 360;i+=45)
+        for(let i = 0;i<= 360;i+=45)
         {
-            this.radar.push(new radar(this.x + this.vector.x,this.y = this.y + this.vector.y, i ,this.games))
+            let realDegres = (360- this.degres) > 270 ? (90-this.degres) : (360-this.degres) + 90;
+            this.radar.push(new radar(this.x  , this.y , i + realDegres,i,this.games))
         }
     }
 
@@ -89,7 +98,7 @@ class Car
     }
 
     freine()    {
-        this.vector.speed   = this.vector.speed > 1.05  ? this.vector.speed / 1.01 : this.vector.speed;
+        this.vector.speed   = this.vector.speed > this.noNeedToFreineSpeed  ? this.vector.speed / 1.01 : this.vector.speed;
         if(this.vector.speed > 1.05)
         {
             this.x = this.x + this.vector.x *this.vector.speed;

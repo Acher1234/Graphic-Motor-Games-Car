@@ -1,27 +1,38 @@
 class radar
 {
-    constructor(x,y,degres,games)
+    constructor(x,y,degres,degresId,games)
     {
+        this.degresId = degresId;
         this.degres = degres;
         this.games = games;
-        var border = document.createElement('div');
-        border.style = 'border-radius:10px;position: absolute;height:'+5+'px;';
-        this.degres = this.degres >= 360 ? this.degres - 360 : this.degres;
-        this.degres = this.degres < 0 ? 360 + this.degres  : this.degres;
-        let realDegres = (360- this.degres) > 270 ? (90-this.degres) : (360-this.degres) + 90;
-        let x,y;
-        x = Math.cos(realDegres * Math.PI / 180)
-        y = Math.sin(realDegres* Math.PI / 180)
-        border.style.left = x + 'px'
-        border.style.bottom = y  + 'px'
-        games.body.appendChild(border);
-        this.border = border;
+        this.borderRa = document.createElement('div');
+        this.borderRa.style = 'border-radius:10px;position: absolute;height:20px;width:20px;background-color:green';
+        this.degres = this.degres %360;
+        this.xRa,this.yRa;
+        this.xRa = (Math.cos(this.degres * Math.PI / 180) *100)  + x
+        this.yRa = (Math.sin(this.degres* Math.PI / 180)*100)  + y
+        console.log(this.xRa,this.yRa)
+        this.borderRa.style.left = this.xRa + 'px'
+        this.borderRa.style.bottom = this.yRa  + 'px'
+        games.body.appendChild(this.borderRa);
+        this.checkPosition();
     }
 
-    constructor(){}
+    checkPosition()
+    {
+        this.positionValid = this.games.checkCordinate(this.xRa,this.yRa,20);
+        this.borderRa.style.backgroundColor = this.positionValid ? 'green' : 'red';
+    }
+
+    isPositionValid()
+    {
+        return this.positionValid;
+    }
+
+
 
     destuctor()
     {
-        this.games.body.removeChild(this.border)
+        this.games.body.removeChild(this.borderRa)
     }
 }
