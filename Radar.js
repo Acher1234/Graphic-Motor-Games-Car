@@ -9,9 +9,8 @@ class radar
         this.borderRa.style = 'border-radius:10px;position: absolute;height:20px;width:20px;background-color:green';
         this.degres = this.degres %360;
         this.xRa,this.yRa;
-        this.xRa = (Math.cos(this.degres * Math.PI / 180) *100)  + x
-        this.yRa = (Math.sin(this.degres* Math.PI / 180)*100)  + y
-        console.log(this.xRa,this.yRa)
+        this.xRa = (Math.cos(this.degres * Math.PI / 180) *75)  + x
+        this.yRa = (Math.sin(this.degres* Math.PI / 180)*75)  + y
         this.borderRa.style.left = this.xRa + 'px'
         this.borderRa.style.bottom = this.yRa  + 'px'
         games.body.appendChild(this.borderRa);
@@ -20,8 +19,11 @@ class radar
 
     checkPosition()
     {
-        this.positionValid = this.games.checkCordinate(this.xRa,this.yRa,20);
-        this.borderRa.style.backgroundColor = this.positionValid ? 'green' : 'red';
+        this.positionValid = this.games.checkDistance(this.xRa,this.yRa);
+        let redValue = this.positionValid > 255 ? 0 : 255 - this.positionValid;
+        let greenValue = this.positionValid > 255 ? 255 : 0 + this.positionValid;
+        
+        this.borderRa.style.backgroundColor = 'rgb('+(redValue*2)+','+greenValue+',0)';
     }
 
     isPositionValid()

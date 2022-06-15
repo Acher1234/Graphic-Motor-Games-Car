@@ -3,6 +3,7 @@ class Car
 
     constructor(games)
     {
+        // this.Reseau = new Reseau(2,[8,4],null,games.gen)
         this.noNeedToFreineSpeed = 1.05
         this.radar = []
         this.score = 0
@@ -52,7 +53,7 @@ class Car
             this.radar[i].destuctor()
         }
         this.radar = []
-        for(let i = 0;i<= 360;i+=45)
+        for(let i = 0;i< 360;i+=45)
         {
             let realDegres = (360- this.degres) > 270 ? (90-this.degres) : (360-this.degres) + 90;
             this.radar.push(new radar(this.x  , this.y , i + realDegres,i,this.games))
@@ -61,19 +62,23 @@ class Car
 
     decideDirection()
     {
-        this.Right = this.games.Right
-        this.Left = this.games.Left
-        this.Up = this.games.Up
-        this.Down = this.games.Down
+        let value
+        let tab = []
+        for(let i=0;i<this.radar.length;i++)
+            tab.push(this.radar[i].positionValid)
+        if(tab.length   == 8)
+        {
+            value = decide(tab)
+            this.Right = value[2] == 1 ? true : false
+            this.Left = value[3] == 1 ? true : false
+            this.Up = value[0] == 1 ? true : false
+            this.Down = value[1] == 1 ? true : false
+        }
     }
 
     checkDirection()
     {
-        if(this.Left && this.Right)
-        {
-            console.log('bug')
-        }
-        else if(this.Left == true)
+        if(this.Left == true)
         {
             this.left()
         }

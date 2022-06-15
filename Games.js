@@ -2,6 +2,8 @@ class Games
 {
     constructor()
     {
+        this.intervalActions = 1
+        this.gen = 1
         this.obstacle = []
         this.cars = []
         this.removedCars = []
@@ -38,60 +40,80 @@ class Games
         return true;
     }
 
+    checkDistance(x,y)
+    {
+        let minDist = Infinity ;
+        for(let i = 0;i< this.obstacle.length;i++)
+        {
+            minDist = Math.min(minDist,this.obstacle[i].distance(x,y))
+        }
+        minDist = Math.min(minDist,Math.sqrt(Math.pow(Math.abs(0-x),2)+Math.pow(Math.abs(0),2)))
+        minDist = Math.min(minDist,Math.sqrt(Math.pow(Math.abs(this.widht-x),2)+Math.pow(Math.abs(0),2)))
+        minDist = Math.min(minDist,Math.sqrt(Math.pow(Math.abs(0),2)+Math.pow(Math.abs(0-y),2)))
+        minDist = Math.min(minDist,Math.sqrt(Math.pow(Math.abs(0),2)+Math.pow(Math.abs(this.height-y),2)))
+        return minDist;
+    }
+
     gameLost()
     {
         clearInterval(this.gamesInterval)
         clearInterval(this.obstacleInterval)
+        let BestValue = -Infinity
+        for(let i = 0;i<this.removedCars.length;i++)
+        {
+            BestValue = BestValue < this.removedCars[i].score ? this.removedCars[i].score  : BestValue ;
+        }
+        alert(BestValue)
         // location.reload();
     }
 
     removeCar(car)
     {
+        this.removedCars.push(this.cars[this.cars.indexOf(car)])
         this.cars.splice(this.cars.indexOf(car),1)
-        this.removedCars.push(this.cars)
         if(this.cars.length == 0)
         {
             this.gameLost()
         }
     }
 
-    setVarTrue(key)
-    {
-        switch(key)
-        {
-            case 38 :
-                this.Up = true;
-                break;
-            case 37 :
-                this.Left = true;
-                break;
-            case 39 :
-                this.Right = true;
-                break;
-            case 40 :
-                this.Down = true;
-                break;
-        }
-    }
+    // setVarTrue(key)
+    // {
+    //     switch(key)
+    //     {
+    //         case 38 :
+    //             this.Up = true;
+    //             break;
+    //         case 37 :
+    //             this.Left = true;
+    //             break;
+    //         case 39 :
+    //             this.Right = true;
+    //             break;
+    //         case 40 :
+    //             this.Down = true;
+    //             break;
+    //     }
+    // }
 
-    setVarFalse(key)
-    {
-        switch(key)
-        {
-            case 38 :
-                this.Up = false;
-                break;
-            case 37 :
-                this.Left = false;
-                break;
-            case 39 :
-                this.Right = false;
-                break;
-            case 40 :
-                this.Down = false;
-                break;
-        }
-    }
+    // setVarFalse(key)
+    // {
+    //     switch(key)
+    //     {
+    //         case 38 :
+    //             this.Up = false;
+    //             break;
+    //         case 37 :
+    //             this.Left = false;
+    //             break;
+    //         case 39 :
+    //             this.Right = false;
+    //             break;
+    //         case 40 :
+    //             this.Down = false;
+    //             break;
+    //     }
+    // }
 
     static singleton = null;
 
@@ -106,14 +128,14 @@ class Games
 
     createCar()
     {
-        this.cars.push(new Car(this));
+            this.cars.push(new Car(this));
     }
 
     initialise()
     {
         this.gamesInterval = setInterval(() => {
             Games.singleton.run()
-        }, 1);
+        }, this.intervalActions);
         this.obstacleInterval = setInterval(() => {
             Games.singleton.createObstacle()
         }, 5000);
@@ -134,14 +156,14 @@ class Games
 
 }
 
-window.addEventListener('keydown',(e)=>{
-    e.keyCode == 13 ? Games.singleton.createCar() : null
-    Games.GamesConstructor().setVarTrue(e.keyCode)
+// window.addEventListener('keydown',(e)=>{
+//     e.keyCode == 13 ? Games.singleton.createCar() : null
+//     Games.GamesConstructor().setVarTrue(e.keyCode)
 
-})
+// })
 
-window.addEventListener('keyup',(e)=>{
-    Games.GamesConstructor().setVarFalse(e.keyCode)
+// window.addEventListener('keyup',(e)=>{
+//     Games.GamesConstructor().setVarFalse(e.keyCode)
 
-})
+// })
 

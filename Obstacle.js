@@ -21,4 +21,9 @@ class obstacle
         }
         return true;
     }
+
+    distance(x,y)
+    {
+       return Math.sqrt(Math.pow(Math.abs(this.x-x),2)+Math.pow(Math.abs(this.y-y),2))
+    }
 }
