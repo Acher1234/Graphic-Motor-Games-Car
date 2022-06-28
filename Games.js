@@ -1,5 +1,6 @@
 class Games 
 {
+    //stay ligne droite pour les obstcle Reseau de neurone
     constructor()
     {
         this.intervalActions = 1
